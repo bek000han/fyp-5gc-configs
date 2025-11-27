@@ -1,23 +1,40 @@
 version: "3.8"
 
 services:
-  free5gc-upf:
-    container_name: upf
+  free5gc-upf1:
+    container_name: upf1
     build:
-      context: ./nf_upf
+      context: ./nf_upf1
       args:
         DEBUG_TOOLS: "false"
-    command: bash -c "./upf-iptables.sh && ./upf -c ./config/upfcfg.yaml"
+    command: bash -c "./upf-iptables.sh && ./upf -c ./config/upf1cfg.yaml"
     volumes:
-      - ./config/upfcfg.yaml:/free5gc/config/upfcfg.yaml
+      - ./config/upf1cfg.yaml:/free5gc/config/upf1cfg.yaml
       - ./config/upf-iptables.sh:/free5gc/upf-iptables.sh
     cap_add:
       - NET_ADMIN
     networks:
       privnet:
         aliases:
-          - upf.free5gc.org
-
+          - upf1.free5gc.org
+          
+free5gc-upf2:
+    container_name: upf2
+    build:
+      context: ./nf_upf2
+      args:
+        DEBUG_TOOLS: "false"
+    command: bash -c "./upf-iptables.sh && ./upf -c ./config/upf2cfg.yaml"
+    volumes:
+      - ./config/upf2cfg.yaml:/free5gc/config/upf2cfg.yaml
+      - ./config/upf-iptables.sh:/free5gc/upf-iptables.sh
+    cap_add:
+      - NET_ADMIN
+    networks:
+      privnet:
+        aliases:
+          - upf2.free5gc.org
+          
   db:
     container_name: mongodb
     image: mongo:4.4
@@ -138,17 +155,17 @@ services:
     depends_on:
       - free5gc-nrf
 
-  free5gc-smf:
-    container_name: smf
+  free5gc-smf1:
+    container_name: smf1
     build:
-      context: ./nf_smf
+      context: ./nf_smf1
       args:
         DEBUG_TOOLS: "false"
-    command: ./smf -c ./config/smfcfg.yaml -u ./config/uerouting.yaml
+    command: ./smf1 -c ./config/smf1cfg.yaml -u ./config/uerouting.yaml
     expose:
       - "8000"
     volumes:
-      - ./config/smfcfg.yaml:/free5gc/config/smfcfg.yaml
+      - ./config/smf1cfg.yaml:/free5gc/config/smf1cfg.yaml
       - ./config/uerouting.yaml:/free5gc/config/uerouting.yaml
       - ./cert:/free5gc/cert
     environment:
@@ -156,11 +173,34 @@ services:
     networks:
       privnet:
         aliases:
-          - smf.free5gc.org
+          - smf1.free5gc.org
     depends_on:
       - free5gc-nrf
-      - free5gc-upf
-
+      - free5gc-upf1
+      
+  free5gc-smf2:
+    container_name: smf2
+    build:
+      context: ./nf_smf2
+      args:
+        DEBUG_TOOLS: "false"
+    command: ./smf2 -c ./config/smf2cfg.yaml -u ./config/uerouting.yaml
+    expose:
+      - "8000"
+    volumes:
+      - ./config/smf2cfg.yaml:/free5gc/config/smf2cfg.yaml
+      - ./config/uerouting.yaml:/free5gc/config/uerouting.yaml
+      - ./cert:/free5gc/cert
+    environment:
+      GIN_MODE: release
+    networks:
+      privnet:
+        aliases:
+          - smf2.free5gc.org
+    depends_on:
+      - free5gc-nrf
+      - free5gc-upf2
+      
   free5gc-udm:
     container_name: udm
     build:
@@ -252,8 +292,10 @@ services:
           - n3iwf.free5gc.org
     depends_on:
       - free5gc-amf
-      - free5gc-smf
-      - free5gc-upf
+      - free5gc-smf1
+      - free5gc-upf1
+      - free5gc-smf2
+      - free5gc-upf2
 
   free5gc-tngf:
     container_name: tngf
@@ -272,8 +314,10 @@ services:
     network_mode: host
     depends_on:
       - free5gc-amf
-      - free5gc-smf
-      - free5gc-upf
+      - free5gc-smf1
+      - free5gc-upf1
+      - free5gc-smf2
+      - free5gc-upf2
 
   free5gc-nef:
     container_name: nef
@@ -338,7 +382,8 @@ services:
           - gnb.free5gc.org
     depends_on:
       - free5gc-amf
-      - free5gc-upf
+      - free5gc-upf1
+      - free5gc-upf2
 
   n3iwue:
     container_name: n3iwue
