@@ -7,9 +7,9 @@ services:
       context: ./nf_upf1
       args:
         DEBUG_TOOLS: "false"
-    command: bash -c "./upf-iptables.sh && ./upf -c ./config/upf1cfg.yaml"
+    command: bash -c "./upf-iptables.sh && ./upf -c ./config/upfcfg1.yaml"
     volumes:
-      - ./config/upf1cfg.yaml:/free5gc/config/upf1cfg.yaml
+      - ./config/upfcfg1.yaml:/free5gc/config/upfcfg1.yaml
       - ./config/upf-iptables.sh:/free5gc/upf-iptables.sh
     cap_add:
       - NET_ADMIN
@@ -26,7 +26,7 @@ free5gc-upf2:
         DEBUG_TOOLS: "false"
     command: bash -c "./upf-iptables.sh && ./upf -c ./config/upf2cfg.yaml"
     volumes:
-      - ./config/upf2cfg.yaml:/free5gc/config/upf2cfg.yaml
+      - ./config/upfcfg2.yaml:/free5gc/config/upfcfg2.yaml
       - ./config/upf-iptables.sh:/free5gc/upf-iptables.sh
     cap_add:
       - NET_ADMIN
@@ -161,11 +161,11 @@ free5gc-upf2:
       context: ./nf_smf1
       args:
         DEBUG_TOOLS: "false"
-    command: ./smf1 -c ./config/smf1cfg.yaml -u ./config/uerouting.yaml
+    command: ./smf1 -c ./config/smfcfg1.yaml -u ./config/uerouting.yaml
     expose:
       - "8000"
     volumes:
-      - ./config/smf1cfg.yaml:/free5gc/config/smf1cfg.yaml
+      - ./config/smfcfg1.yaml:/free5gc/config/smfcfg1.yaml
       - ./config/uerouting.yaml:/free5gc/config/uerouting.yaml
       - ./cert:/free5gc/cert
     environment:
@@ -184,11 +184,11 @@ free5gc-upf2:
       context: ./nf_smf2
       args:
         DEBUG_TOOLS: "false"
-    command: ./smf2 -c ./config/smf2cfg.yaml -u ./config/uerouting.yaml
+    command: ./smf2 -c ./config/smfcfg2.yaml -u ./config/uerouting.yaml
     expose:
       - "8000"
     volumes:
-      - ./config/smf2cfg.yaml:/free5gc/config/smf2cfg.yaml
+      - ./config/smfcfg2.yaml:/free5gc/config/smfcfg2.yaml
       - ./config/uerouting.yaml:/free5gc/config/uerouting.yaml
       - ./cert:/free5gc/cert
     environment:
