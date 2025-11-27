@@ -246,7 +246,6 @@ services:
       - NET_ADMIN
     networks:
       privnet:
-        ipv4_address: 10.100.200.15
         aliases:
           - n3iwf.free5gc.org
     depends_on:
