@@ -23,7 +23,7 @@ free5gc-upf2:
       context: ./nf_upf2
       args:
         DEBUG_TOOLS: "false"
-    command: bash -c "./upf-iptables.sh && ./upf -c ./config/upf2cfg.yaml"
+    command: bash -c "./upf-iptables.sh && ./upf -c ./config/upfcfg2.yaml"
     volumes:
       - ./config/upfcfg2.yaml:/free5gc/config/upfcfg2.yaml
       - ./config/upf-iptables.sh:/free5gc/upf-iptables.sh
@@ -160,7 +160,7 @@ free5gc-upf2:
       context: ./nf_smf1
       args:
         DEBUG_TOOLS: "false"
-    command: ./smf1 -c ./config/smfcfg1.yaml -u ./config/uerouting.yaml
+    command: ./smf -c ./config/smfcfg1.yaml -u ./config/uerouting.yaml
     expose:
       - "8000"
     volumes:
@@ -183,7 +183,7 @@ free5gc-upf2:
       context: ./nf_smf2
       args:
         DEBUG_TOOLS: "false"
-    command: ./smf2 -c ./config/smfcfg2.yaml -u ./config/uerouting.yaml
+    command: ./smf -c ./config/smfcfg2.yaml -u ./config/uerouting.yaml
     expose:
       - "8000"
     volumes:
