@@ -6,7 +6,7 @@ services:
     image: free5gc/upf:v4.1.0
     command: bash -c "./upf-iptables.sh && ./upf -c ./config/upfcfg1.yaml"
     volumes:
-      - ./config/upfcfg.yaml:/free5gc/config/upfcfg1.yaml
+      - ./config/upfcfg1.yaml:/free5gc/config/upfcfg1.yaml
       - ./config/upf-iptables.sh:/free5gc/upf-iptables.sh
     cap_add:
       - NET_ADMIN
@@ -20,7 +20,7 @@ services:
     image: free5gc/upf:v4.1.0
     command: bash -c "./upf-iptables.sh && ./upf -c ./config/upfcfg2.yaml"
     volumes:
-      - ./config/upfcfg.yaml:/free5gc/config/upfcfg2.yaml
+      - ./config/upfcfg2.yaml:/free5gc/config/upfcfg2.yaml
       - ./config/upf-iptables.sh:/free5gc/upf-iptables.sh
     cap_add:
       - NET_ADMIN
@@ -137,7 +137,7 @@ services:
   free5gc-smf1:
     container_name: smf1
     image: free5gc/smf:v4.1.0
-    command: ./smf -c ./config/smfcfg1.yaml -u ./config/uerouting.yaml
+    command: ./smf1 -c ./config/smfcfg1.yaml -u ./config/uerouting.yaml
     expose:
       - "8000"
     volumes:
@@ -152,12 +152,12 @@ services:
           - smf1.free5gc.org
     depends_on:
       - free5gc-nrf
-      - free5gc-upf
+      - free5gc-upf1
 
   free5gc-smf2:
     container_name: smf2
     image: free5gc/smf:v4.1.0
-    command: ./smf -c ./config/smfcfg2.yaml -u ./config/uerouting.yaml
+    command: ./smf2 -c ./config/smfcfg2.yaml -u ./config/uerouting.yaml
     expose:
       - "8000"
     volumes:
@@ -172,7 +172,7 @@ services:
           - smf2.free5gc.org
     depends_on:
       - free5gc-nrf
-      - free5gc-upf
+      - free5gc-upf2
 
   free5gc-udm:
     container_name: udm
@@ -252,8 +252,10 @@ services:
           - n3iwf.free5gc.org
     depends_on:
       - free5gc-amf
-      - free5gc-smf
-      - free5gc-upf
+      - free5gc-smf1
+      - free5gc-upf1
+      - free5gc-smf2
+      - free5gc-upf2
 
   free5gc-tngf:
     container_name: tngf
@@ -269,8 +271,10 @@ services:
     network_mode: host
     depends_on:
       - free5gc-amf
-      - free5gc-smf
-      - free5gc-upf
+      - free5gc-smf1
+      - free5gc-upf1
+      - free5gc-smf2
+      - free5gc-upf2
 
   free5gc-nef:
     container_name: nef
@@ -330,7 +334,8 @@ services:
           - gnb.free5gc.org
     depends_on:
       - free5gc-amf
-      - free5gc-upf
+      - free5gc-upf1
+      - free5gc-upf2
 
   n3iwue:
     container_name: n3iwue
