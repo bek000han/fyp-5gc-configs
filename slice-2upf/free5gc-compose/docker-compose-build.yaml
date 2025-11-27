@@ -370,7 +370,8 @@ free5gc-upf2:
     command: ./nr-gnb -c ./config/gnbcfg.yaml
     volumes:
       - ./config/gnbcfg.yaml:/ueransim/config/gnbcfg.yaml
-      - ./config/uecfg.yaml:/ueransim/config/uecfg.yaml
+      - ./config/uecfg1.yaml:/ueransim/config/uecfg1.yaml
+      - ./config/uecfg2.yaml:/ueransim/config/uecfg2.yaml
     cap_add:
       - NET_ADMIN
     devices:
