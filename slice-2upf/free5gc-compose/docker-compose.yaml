@@ -136,7 +136,7 @@ services:
   free5gc-smf1:
     container_name: smf1
     image: free5gc/smf:v4.1.0
-    command: ./smf1 -c ./config/smfcfg1.yaml -u ./config/uerouting.yaml
+    command: ./smf -c ./config/smfcfg1.yaml -u ./config/uerouting.yaml
     expose:
       - "8000"
     volumes:
@@ -156,7 +156,7 @@ services:
   free5gc-smf2:
     container_name: smf2
     image: free5gc/smf:v4.1.0
-    command: ./smf2 -c ./config/smfcfg2.yaml -u ./config/uerouting.yaml
+    command: ./smf -c ./config/smfcfg2.yaml -u ./config/uerouting.yaml
     expose:
       - "8000"
     volumes:
